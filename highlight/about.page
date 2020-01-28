@@ -49,9 +49,9 @@ function foo($bar) {
 
 Use fenced code block syntax to add the language type to the `<code>` element in Markdown:
 
-``` .txt
+``` .markdown
 ~~~ .php
-&lt;?php
+<?php
 
 function foo($bar) {
     return 'baz';
