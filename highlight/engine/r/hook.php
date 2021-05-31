@@ -1,4 +1,4 @@
-<?php namespace _\lot\x;
+<?php namespace x;
 
 function highlight($content) {
     if (!$content || false === \strpos($content, '</pre>')) {
@@ -19,12 +19,11 @@ function highlight($content) {
             }, ' ' . $m[2] . ' ');
         }
         if ($languages) {
-            $state = \State::get('x.highlight', true);
-            if (empty($state['state']['class-prefix'])) {
-                $state['state']['class-prefix'] = $state['class'] . '-';
-            }
+            extract($GLOBALS, \EXTR_SKIP);
+            $p = $state->x->highlight->{'class'} ?? 'hl';
+            $prefix = $state->x->highlight->state->{'class-prefix'} ?? $p . '-';
             $in = new \Highlight\Highlighter;
-            foreach ($state['state'] ?? [] as $k => $v) {
+            foreach ($state->x->highlight->state ?? [] as $k => $v) {
                 $in->{'set' . \p($k)}($v);
             }
             try {
@@ -37,7 +36,7 @@ function highlight($content) {
                 }
                 $m[2] = \trim(\preg_replace_callback('/ class=([\'"])(.*?)\1 /', function($m) use($out, $state) {
                     $a = \explode(' ', $m[2]);
-                    $a[] = $state['class'];
+                    $a[] = $p;
                     $a[] = $out->language;
                     $a = \array_unique(\array_filter($a));
                     \sort($a);

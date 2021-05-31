@@ -1,14 +1,14 @@
-<?php namespace _\lot\x\highlight;
+<?php namespace x\highlight;
 
 function asset() {
-    $state = \State::get('x.highlight', true);
-    if ($skin = $state['skin'] ?? null) {
+    extract($GLOBALS, \EXTR_SKIP);
+    $class = $state->x->highlight->{'class'} ?? null;
+    $skin = $state->x->highlight->skin ?? null;
+    if ($skin) {
         try {
             $style = \HighlightUtilities\getStyleSheet($skin);
-            if ($class = $state['class'] ?? null) {
-                $style = \strtr($style, [
-                    '.hljs' => '.' . $class
-                ]);
+            if ($class) {
+                $style = \strtr($style, ['.hljs' => '.' . $class]);
             }
             \Asset::style($style);
         } catch (\DomainException $e) {}
