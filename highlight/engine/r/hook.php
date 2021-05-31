@@ -23,6 +23,7 @@ function highlight($content) {
             $p = $state->x->highlight->{'class'} ?? 'hl';
             $prefix = $state->x->highlight->state->{'class-prefix'} ?? $p . '-';
             $in = new \Highlight\Highlighter;
+            $in->setClassPrefix($prefix);
             foreach ($state->x->highlight->state ?? [] as $k => $v) {
                 $in->{'set' . \p($k)}($v);
             }
@@ -34,7 +35,7 @@ function highlight($content) {
                     $in->setAutodetectLanguages($languages);
                     $out = $in->highlightAuto($code);
                 }
-                $m[2] = \trim(\preg_replace_callback('/ class=([\'"])(.*?)\1 /', function($m) use($out, $state) {
+                $m[2] = \trim(\preg_replace_callback('/ class=([\'"])(.*?)\1 /', function($m) use($out, $p, $state) {
                     $a = \explode(' ', $m[2]);
                     $a[] = $p;
                     $a[] = $out->language;
