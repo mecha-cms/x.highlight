@@ -4,7 +4,7 @@ description: Syntax highlighter that works server-side.
 link: 'https://github.com/scrivo/highlight.php'
 author: Taufik Nurrohman
 type: Markdown
-version: 2.0.1
+version: 2.0.2
 
 use:
   '.\lot\x\asset': 1
