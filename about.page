@@ -4,11 +4,11 @@ description: Syntax highlighter that works server-side.
 link: 'https://github.com/scrivo/highlight.php'
 author: Taufik Nurrohman
 type: Markdown
-version: 2.0.2
+version: 3.0.0
 
-use:
-  '.\lot\x\asset': 1
-  '.\lot\x\page': 1
+alert:
+  stale:
+  - 'Dependencies on this extension are deprecated and may not work with recent PHP versions.'
 ...
 
 Highlight.php is a server-side syntax highlighter written in PHP. It’s a port of [highlight.js](https://highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
