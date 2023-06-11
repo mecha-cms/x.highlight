@@ -1,24 +1,41 @@
 <?php namespace x\highlight;
 
-function content($content) {
+function get() {
     if (!\class_exists("\\Asset")) {
         return;
     }
-    $style = \file_get_contents(__DIR__ . \D . 'engine' . \D . 'vendor' . \D . 'scrivo' . \D . 'highlight.php' . \D . 'styles' . \D . 'default.css');
-    $style = \preg_replace('/\.hljs([\s.-])/', '.hlphp$1', $style);
-    \Asset::set('data:text/css;base64,' . \base64_encode($style), 10);
+    \extract($GLOBALS, \EXTR_SKIP);
+    $prefix = $state->x->highlight->c ?? 'hljs';
+    $skin = $state->x->highlight->skin ?? 'default';
+    if (\is_file($file = __DIR__ . \D . 'engine' . \D . 'vendor' . \D . 'scrivo' . \D . 'highlight.php' . \D . 'styles' . \D . $skin . '.css')) {
+        $style = \preg_replace('/\.hljs([\s.-])/', '.' . $prefix . '$1', \file_get_contents($file));
+        // Remove the hard-coded `padding` value from the original skin file
+        $style = \preg_replace_callback('/\.' . \x($prefix) . '(\s*)\{(\s*)([^}]+?)(\s*)\}/', static function ($m) use ($prefix) {
+            $parts = \explode("\n", $m[3]);
+            foreach ($parts as &$part) {
+                if (0 === \strpos(\trim($part), 'padding:')) {
+                    $part = \preg_replace('/^(\s*)padding:/', '$1/* padding:', $part) . ' */';
+                }
+            }
+            unset($part);
+            return '.' . $prefix . $m[1] . '{' . $m[2] . \implode("\n", $parts) . $m[4] . '}';
+        }, $style);
+        \Asset::set('data:text/css;base64,' . \base64_encode($style), 10);
+    }
 }
 
 function page__content($content) {
     if (!$content || false === \stripos($content, '</pre>')) {
         return $content;
     }
-    return \preg_replace_callback('/<pre(\s(?:"[^"]*"|\'[^\']*\'|[^\/>]+)*)?>(\s*)<code(\s(?:"[^"]*"|\'[^\']*\'|[^\/>]+)*)?>([\s\S]*?)<\/code>(\s*)<\/pre>/i', static function ($m) {
+    \extract($GLOBALS, \EXTR_SKIP);
+    $prefix = $state->x->highlight->c ?? 'hljs';
+    return \preg_replace_callback('/<pre(\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>(\s*)<code(\s(?:"[^"]*"|\'[^\']*\'|[^\/>])*)?>([\s\S]*?)<\/code>(\s*)<\/pre>/i', static function ($m) use ($prefix) {
         $out  = '<pre' . ($m[1] ?? "") . '>';
         $out .= $m[2];
         require_once __DIR__ . \D . 'engine' . \D . 'vendor' . \D . 'autoload.php';
         $highlight = new \Highlight\Highlighter;
-        $highlight->setClassPrefix('hlphp-');
+        $highlight->setClassPrefix($prefix . '-');
         $code = new \HTML(['code', $m[4], []]);
         // `<code class="asdf">…</code>`
         if (false !== \stripos($test = $m[3] ?? "", 'class=') && \preg_match('/\bclass=("[^"]+"|\'[^\']+\'|\S+)/i', $test, $mm)) {
@@ -44,7 +61,7 @@ function page__content($content) {
                     }
                 }
                 $class[] = 'language-' . $v->language;
-                $class[] = 'hlphp';
+                $class[] = $prefix;
                 $class = \array_unique($class);
                 \sort($class);
                 $code['class'] = \implode(' ', $class);
@@ -57,7 +74,7 @@ function page__content($content) {
                 $highlight->setAutodetectLanguages(['css', 'html', 'javascript', 'json', 'php', 'xml', 'yaml']);
                 $v = $highlight->highlightAuto(\htmlspecialchars_decode($m[4]));
                 $class[] = 'language-' . $v->language;
-                $class[] = 'hlphp';
+                $class[] = $prefix;
                 $class = \array_unique($class);
                 \sort($class);
                 $code['class'] = \implode(' ', $class);
@@ -70,5 +87,5 @@ function page__content($content) {
     }, $content);
 }
 
-\Hook::set('content', __NAMESPACE__ . "\\content", -1);
+\Hook::set('get', __NAMESPACE__ . "\\get", -1);
 \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.1);

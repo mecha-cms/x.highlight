@@ -1,0 +1,5 @@
+{
+  "description": "Syntax highlighter that works server-side.",
+  "license": "GPL-3.0-or-later",
+  "name": "mecha-cms/x.highlight"
+}
