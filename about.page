@@ -10,8 +10,7 @@ version: 3.0.0
 
 alert:
   stale:
-  - 'The third-party libraries used in this extension are considered obsolete and may not work with newer versions of PHP
-     unless you disable the test mode.'
+  - 'The third-party libraries used in this extension are considered obsolete and may not work with newer versions of PHP unless you disable the test mode.'
 ...
 
 Highlight.php is a server-side syntax highlighter written in PHP. It’s a port of [highlight.js](https://highlightjs.org)
