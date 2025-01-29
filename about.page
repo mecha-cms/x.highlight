@@ -6,7 +6,7 @@ color: '#660000'
 link: 'https://github.com/scrivo/highlight.php'
 author: Taufik Nurrohman
 type: Markdown
-version: 3.1.0
+version: 3.0.0
 
 alert:
   stale:
