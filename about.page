@@ -6,19 +6,21 @@ color: '#660000'
 link: 'https://github.com/scrivo/highlight.php'
 author: Taufik Nurrohman
 type: Markdown
-version: 3.0.0
+version: 3.1.0
 
 alert:
   stale:
-  - 'The third-party libraries used in this extension are considered obsolete and may not work with newer versions of PHP unless you disable the test mode.'
-'
+  - The third-party libraries used in this extension are considered obsolete and may not work with newer versions of PHP
+    unless you disable the test mode.
 ...
 
-Highlight.php is a server-side syntax highlighter written in PHP. It’s a port of [highlight.js](https://highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
+Highlight.php is a server-side syntax highlighter written in PHP. It’s a port of [highlight.js](https://highlightjs.org)
+by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
 
 ### Usage
 
-Add one of the language type available in `.\lot\x\highlight\engine\i\@scrivo\highlight.php\Highlight\languages` folder to the `<code>` element:
+Add one of the language type available in `.\lot\x\highlight\engine\vendor\scrivo\highlight.php\Highlight\languages`
+folder to the `<code>` element:
 
 ~~~ .html
 <pre><code class="php">&lt;?php
@@ -28,7 +30,8 @@ function foo($bar) {
 }</code></pre>
 ~~~
 
-Add `lang-` or `language-` prefix to the language type to make it a priority if you have multiple classes added to the `<code>` element:
+Add `lang-` or `language-` prefix to the language type to make it a priority if you have multiple classes added to the
+`<code>` element:
 
 ~~~ .html
 <pre><code class="foo bar language-php baz">&lt;?php
@@ -38,7 +41,8 @@ function foo($bar) {
 }</code></pre>
 ~~~
 
-Without specifying a priority, this extension will try to use one of the most relevant language types between `foo`, `bar` and `baz`:
+Without specifying a priority, this extension will try to use one of the most relevant language types between `foo`,
+`bar` and `baz`:
 
 ~~~ .html
 <pre><code class="foo bar baz">&lt;?php
@@ -68,12 +72,12 @@ Set your preferred syntax highlighter theme to the `skin` property in `.\lot\x\h
 
 ~~~ .php
 return [
-    'skin' => 'agate'
+    'skin' => ['name' => 'agate']
 ];
 ~~~
 
 Or use the global state modifier to overwrite it in `.\lot\y\*\index.php` file:
 
 ~~~ .php
-State::set('x.highlight.skin', 'agate');
+State::set('x.highlight.skin.name', 'agate');
 ~~~

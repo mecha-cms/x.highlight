@@ -2,5 +2,5 @@
 
 return [
     'c' => 'hlphp',
-    'skin' => 'vs'
+    'skin' => ['name' => 'default']
 ];

@@ -6,9 +6,9 @@ function get() {
     }
     \extract($GLOBALS, \EXTR_SKIP);
     $prefix = $state->x->highlight->c ?? 'hljs';
-    $skin = $state->x->highlight->skin ?? 'default';
+    $skin = $state->x->highlight->skin->name ?? 'default';
     if (\is_file($file = __DIR__ . \D . 'engine' . \D . 'vendor' . \D . 'scrivo' . \D . 'highlight.php' . \D . 'styles' . \D . $skin . '.css')) {
-        $style = \preg_replace('/\.hljs([\s.-])/', '.' . $prefix . '$1', \file_get_contents($file));
+        $style = \preg_replace('/\.hljs\b/', '.' . $prefix, \file_get_contents($file));
         // Remove the hard-coded `padding` value from the original skin file
         $style = \preg_replace_callback('/\.' . \x($prefix) . '(\s*)\{(\s*)([^}]+?)(\s*)\}/', static function ($m) use ($prefix) {
             $parts = \explode("\n", $m[3]);
@@ -20,7 +20,7 @@ function get() {
             unset($part);
             return '.' . $prefix . $m[1] . '{' . $m[2] . \implode("\n", $parts) . $m[4] . '}';
         }, $style);
-        \Asset::set('data:text/css;base64,' . \base64_encode($style), 10);
+        \Asset::set('data:text/css;base64,' . \base64_encode($style), 20.1);
     }
 }
 
